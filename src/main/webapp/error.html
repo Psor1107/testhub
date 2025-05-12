@@ -1,0 +1,51 @@
+<html>
+<head>
+    <title>Erro</title>
+    <style>
+        body {
+            background-color: #fff8e1;
+            font-family: Arial, sans-serif;
+            color: #b71c1c;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #d32f2f;
+            font-size: 2.5em;
+            border-bottom: 2px solid #ffeb3b;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #f57c00;
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #ff5252;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            margin-top: 30px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #e53935;
+        }
+    </style>
+    <script>
+        function redirecionar() {
+            window.location.href = "http://localhost:8080/testhub/app/listar";
+        }
+    </script>
+</head>
+<body>
+    <h1>Erro</h1>
+    <h2>Rota nao definida</h2>
+    <button onclick="redirecionar()">Retornar o Index</button>
+</body>
+</html>
