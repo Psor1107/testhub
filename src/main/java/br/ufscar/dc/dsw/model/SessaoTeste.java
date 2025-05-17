@@ -1,6 +1,7 @@
 package br.ufscar.dc.dsw.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import br.ufscar.dc.dsw.enums.StatusSessao;
 
@@ -17,7 +18,7 @@ public class SessaoTeste {
     private Projeto projeto;
 
     // quem executa a sessao de teste
-    private Tester tester;
+    private List<Tester> testers;
 
     // construtores
     public SessaoTeste() {
@@ -96,10 +97,10 @@ public class SessaoTeste {
     public void setProjeto(Projeto projeto) {
         this.projeto = projeto;
     }
-    public Tester getTester() {
-        return tester;
+    public List<Tester> getTesters() {
+        return testers;
     }
-    public void setTester(Tester tester) {
-        this.tester = tester;
+    public void setTesters(List<Tester> testers) {
+        this.testers = testers;
     }
 }

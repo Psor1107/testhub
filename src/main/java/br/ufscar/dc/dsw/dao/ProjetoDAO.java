@@ -5,57 +5,116 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.ufscar.dc.dsw.model.Admin;
 import br.ufscar.dc.dsw.model.Projeto;
 import br.ufscar.dc.dsw.util.ConnectionFactory;
 
 public class ProjetoDAO {
 
     public void inserir(Projeto projeto) {
-        String sql = "INSERT INTO Projeto (nome, descricao, data_criacao, admin_id) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Projeto (nome, descricao, dataCriacao, dataFim) VALUES (?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, projeto.getNome());
             stmt.setString(2, projeto.getDescricao());
-            stmt.setTimestamp(3, Timestamp.valueOf(projeto.getDataCriacao()));
-            stmt.setLong(4, projeto.getAdmin().getId());
+            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(projeto.getDataCriacao()));
+            stmt.setTimestamp(4, java.sql.Timestamp.valueOf(projeto.getDataFim()));
+
             stmt.executeUpdate();
 
-            // Recupera o ID gerado
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                projeto.setId(rs.getLong(1));
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    projeto.setId(rs.getLong(1));
+                }
+            }
+            
+            if (projeto.getAdmin() != null) {
+                inserirAdmin(projeto.getId(), projeto.getAdmin().getId());
+            }
+
+            if (projeto.getMembros() != null) {
+                for (var usuario : projeto.getMembros()) {
+                    inserirMembro(projeto.getId(), usuario.getId());
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
-    public List<Projeto> listarPorAdmin(Admin admin) {
-        String sql = "SELECT * FROM Projeto WHERE admin_id = ?";
-        List<Projeto> projetos = new ArrayList<>();
+    public void inserirMembro(Long projetoId, Long usuarioId) {
+        String sql = "INSERT INTO Projeto_Membro (projeto_id, usuario_id) VALUES (?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, projetoId);
+            stmt.setLong(2, usuarioId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-            stmt.setLong(1, admin.getId());
-            ResultSet rs = stmt.executeQuery();
+    public void inserirAdmin(Long projetoId, Long adminId) {
+        String sql = "INSERT INTO Projeto_Admin (projeto_id, admin_id) VALUES (?, ?)";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, projetoId);
+            stmt.setLong(2, adminId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void removerMembro(Long projetoId, Long usuarioId) {
+        String sql = "DELETE FROM Projeto_Membro WHERE projeto_id = ? AND usuario_id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, projetoId);
+            stmt.setLong(2, usuarioId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void removerAdmin(Long projetoId, Long adminId) {
+        String sql = "DELETE FROM Projeto_Admin WHERE projeto_id = ? AND admin_id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setLong(1, projetoId);
+            stmt.setLong(2, adminId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Projeto> listarTodos() {
+        String sql = "SELECT * FROM Projeto";
+        List<Projeto> projetos = new ArrayList<>();
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Projeto p = new Projeto();
-                p.setId(rs.getLong("id"));
-                p.setNome(rs.getString("nome"));
-                p.setDescricao(rs.getString("descricao"));
-                p.setDataCriacao(rs.getTimestamp("data_criacao").toLocalDateTime());
-                p.setAdmin(admin); // Associa o Admin
-                projetos.add(p);
+                Projeto projeto = new Projeto();
+                projeto.setId(rs.getLong("id"));
+                projeto.setNome(rs.getString("nome"));
+                projeto.setDescricao(rs.getString("descricao"));
+                projeto.setDataCriacao(rs.getTimestamp("dataCriacao").toLocalDateTime());
+                projeto.setDataFim(rs.getTimestamp("dataFim").toLocalDateTime());
+                projetos.add(projeto);
+            }
+
+            if (projetos.isEmpty()) {
+                return new ArrayList<>();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return projetos;
     }

@@ -23,3 +23,11 @@ out/
 *.ear
 *.class
 *.log
+
+# database files
+testhub_db/
+derby.log
+
+# OS files
+.DS_Store
+Thumbs.db

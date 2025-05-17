@@ -5,24 +5,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionFactory {
-    private static Connection conexao = null;
-
     public static Connection getConnection() {
-        if (conexao == null) {
-            try {
-
-                // ainda não criei o banco de dados
-                // porém os dados iriam aqui 
-
-                String url = "jdbc:mysql://localhost:3306/testhubdb";
-                String usuario = "root";
-                String senha = "";
-                
-                conexao = DriverManager.getConnection(url, usuario, senha);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+        try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            String url = "jdbc:derby://localhost:1527/testhub_db;create=true";
+            String usuario = "app";
+            String senha = "app";
+            return DriverManager.getConnection(url, usuario, senha);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+            throw new RuntimeException("Driver Derby Client não encontrado!", ex);
         }
-        return conexao;
     }
 }
