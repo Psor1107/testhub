@@ -4,6 +4,7 @@
 <%
     List<Projeto> projetos = (List<Projeto>) request.getAttribute("projetos");
 %>
+<a href="/testhub/app"><button class="button">Voltar ao mural</button></a>
 <table border="1">
     <tr>
         <th>ID</th>

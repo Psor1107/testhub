@@ -8,6 +8,7 @@ VOCÊS FORAM AVISADOS
 
 */
 
+// os testes devem ser feitos via tomcat/web
 
 // package br.ufscar.dc.dsw;
 

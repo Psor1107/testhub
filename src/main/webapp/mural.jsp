@@ -74,7 +74,7 @@
     </div>
     
     <div class="nav-bar">
-        <button class="button">Projetos</button>
+        <a href="/testhub/app/listar"><button class="button">Projetos</button></a>
         <button class="button">Sessões</button>
         <button class="button">Estratégias</button>
         <button class="button">Login</button>

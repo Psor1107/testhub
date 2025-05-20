@@ -52,7 +52,6 @@ public class MainController extends HttpServlet {
     private void executaTeste(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         
         // gera dados unicos para evitar duplicidade
-        // meu corpo e minha alma não são mais o mesmo ser
 
         // isso aqui é só um bolo de nada pra testar
         // indiferente, vai ser excluido no proximo commit
