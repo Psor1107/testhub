@@ -1,23 +1,18 @@
 package br.ufscar.dc.dsw.dao;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import br.ufscar.dc.dsw.model.Usuario;
 import br.ufscar.dc.dsw.util.ConnectionFactory;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class UsuarioDAO {
 
-    // q̶u̶a̶s̶e̶ ̶t̶u̶d̶o̶ ̶a̶q̶u̶i̶ ̶é̶ ̶t̶e̶m̶p̶o̶r̶a̶r̶i̶o̶,̶ ̶e̶u̶ ̶e̶s̶t̶o̶u̶ ̶s̶ó̶ ̶s̶e̶t̶a̶n̶d̶o̶ ̶a̶s̶ ̶c̶l̶a̶s̶s̶e̶s̶
-    // ̶p̶r̶a̶ ̶s̶e̶ ̶p̶r̶e̶o̶c̶u̶p̶a̶r̶ ̶e̶m̶ ̶r̶e̶f̶i̶n̶a̶r̶ ̶o̶s̶ ̶r̶e̶q̶u̶i̶s̶i̶t̶o̶s̶/̶f̶u̶n̶c̶i̶o̶n̶a̶l̶i̶d̶a̶d̶e̶s̶ ̶d̶e̶p̶o̶i̶s̶
-
-    // bom, eu acredito que tenha setado direito, mas sintam-se a vontade
-    // pra checar se esta tudo de acordo
-    // (serve pra todos os DAOs)
     public void inserir(Usuario usuario) {
-        String sql = "INSERT INTO Usuario (nome, email, senha, tipo) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO TESTHUB.USUARIO (nome, email, senha, tipo) VALUES (?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
-             java.sql.PreparedStatement stmt = conn.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, usuario.getNome());
             stmt.setString(2, usuario.getEmail());
@@ -26,7 +21,7 @@ public class UsuarioDAO {
 
             stmt.executeUpdate();
 
-            try (java.sql.ResultSet rs = stmt.getGeneratedKeys()) {
+            try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     usuario.setId(rs.getLong(1));
                 }
@@ -35,6 +30,78 @@ public class UsuarioDAO {
             throw new RuntimeException(e);
         }
     }
-    
-    // outros métodos: atualizarStatus, buscarPorId
+
+    public Usuario buscarPorId(Long id) {
+        String sql = "SELECT * FROM TESTHUB.USUARIO WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return mapearUsuario(rs);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public List<Usuario> listarTodos() {
+        String sql = "SELECT * FROM TESTHUB.USUARIO";
+        List<Usuario> usuarios = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                usuarios.add(mapearUsuario(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return usuarios;
+    }
+
+    public void atualizar(Usuario usuario) {
+        String sql = "UPDATE TESTHUB.USUARIO SET nome = ?, email = ?, senha = ?, tipo = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, usuario.getNome());
+            stmt.setString(2, usuario.getEmail());
+            stmt.setString(3, usuario.getSenha());
+            stmt.setString(4, usuario.getRole());
+            stmt.setLong(5, usuario.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deletar(Long id) {
+        String sql = "DELETE FROM TESTHUB.USUARIO WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Usuario mapearUsuario(ResultSet rs) throws SQLException {
+        Usuario usuario = new Usuario();
+        usuario.setId(rs.getLong("id"));
+        usuario.setNome(rs.getString("nome"));
+        usuario.setEmail(rs.getString("email"));
+        usuario.setSenha(rs.getString("senha"));
+        usuario.setRole(rs.getString("tipo"));
+        return usuario;
+    }
 }

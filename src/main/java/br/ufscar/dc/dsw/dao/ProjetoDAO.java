@@ -119,5 +119,56 @@ public class ProjetoDAO {
         return projetos;
     }
 
-    // outros métodos: atualizar, excluir, buscarPorId
+    public Projeto buscarPorId(Long id) {
+        String sql = "SELECT * FROM Projeto WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Projeto projeto = new Projeto();
+                    projeto.setId(rs.getLong("id"));
+                    projeto.setNome(rs.getString("nome"));
+                    projeto.setDescricao(rs.getString("descricao"));
+                    projeto.setDataCriacao(rs.getTimestamp("dataCriacao").toLocalDateTime());
+                    projeto.setDataFim(rs.getTimestamp("dataFim").toLocalDateTime());
+                    return projeto;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public void atualizar(Projeto projeto) {
+        String sql = "UPDATE Projeto SET nome = ?, descricao = ?, dataCriacao = ?, dataFim = ? WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, projeto.getNome());
+            stmt.setString(2, projeto.getDescricao());
+            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(projeto.getDataCriacao()));
+            stmt.setTimestamp(4, java.sql.Timestamp.valueOf(projeto.getDataFim()));
+            stmt.setLong(5, projeto.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void excluir(Long id) {
+        String sql = "DELETE FROM Projeto WHERE id = ?";
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
