@@ -72,5 +72,6 @@ public class SessaoTesteDAO {
         }
     }
 
+
     // outros métodos: atualizarStatus, buscarPorId
 }
