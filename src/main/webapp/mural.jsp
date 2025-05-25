@@ -1,4 +1,17 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
+<c:set var="idiomaSolicitado" value="${param.lingua}" />
+<c:if test="${not empty idiomaSolicitado}">
+    <fmt:setLocale value="${idiomaSolicitado}" />
+    <c:set var="userLocaleInSession" value="${idiomaSolicitado}" scope="session" />
+</c:if>
+<c:if test="${empty idiomaSolicitado and not empty sessionScope['javax.servlet.jsp.jstl.fmt.locale.session']}">
+    <fmt:setLocale value="${sessionScope['javax.servlet.jsp.jstl.fmt.locale.session']}" />
+</c:if>
+
+<fmt:setBundle basename="messages"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,33 +83,35 @@
 <body>
     <div class="header">
         <h1>TestHub</h1>
-        <p>Plataforma de Gerenciamento de Testes Exploratórios</p>
+        <p><fmt:message key="plataformaGerenc"/></p>
     </div>
     
     <div class="nav-bar">
-        <a href="/testhub/app/listar"><button class="button">Projetos</button></a>
-        <button class="button">Sessões</button>
-        <button class="button">Estratégias</button>
+        <a href="/testhub/app/listar"><button class="button"><fmt:message key="projetos"/></button></a>
+        <button class="button"><fmt:message key="sessões"/></button>
+        <button class="button"><fmt:message key="estrategias"/></button>
         <button class="button">Login</button>
     </div>
+    <a href="mural.jsp?lingua=en" class="lang-button"><fmt:message key="ingles"/></a>
+    <a href="mural.jsp?lingua=pt" class="lang-button"><fmt:message key="portugues"/></a>
     
     <div class="content">
         <div class="card">
-            <h2>Bem-vindo ao TestHub!</h2>
-            <p>Gerencie suas sessões de teste de forma eficiente e colaborativa</p>
+            <h2><fmt:message key="bemvindo"/></h2>
+            <p><fmt:message key="gerencie"/></p>
         </div>
         
         <div class="card">
-            <h3>Últimas Atividades</h3>
+            <h3><fmt:message key="ultimasAtiv"/></h3>
             <div style="display: flex; gap: 20px; margin-top: 15px;">
                 <div style="flex: 1; padding: 15px; background-color: var(--light-cream); border-radius: 8px;">
-                    <h4>Projetos Ativos</h4>
-                    <p>3 projetos em andamento</p>
+                    <h4><fmt:message key="projAtiv"/></h4>
+                    <p><fmt:message key="3projAnd"/></p>
                 </div>
                 
                 <div style="flex: 1; padding: 15px; background-color: var(--light-cream); border-radius: 8px;">
-                    <h4>Sessões Recentes</h4>
-                    <p>5 sessões concluídas</p>
+                    <h4><fmt:message key="sessoesRec"/></h4>
+                    <p><fmt:message key="5sessocesConc"/></p>
                 </div>
             </div>
         </div>
