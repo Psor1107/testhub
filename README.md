@@ -1,16 +1,66 @@
 # TestHub-DSW1
 
-A web application designed to help game testers manage their tests. Built using Java Servlets, JSP, and Maven.
+Uma aplicação web projetada para auxiliar testadores de jogos no gerenciamento de suas sessões de testes. Construído utilizando Java Servlets, JSP, and Maven.
 
 ![TestHub Logo](https://i.imgur.com/KRbg32p.png "TestHub")
 
 ---
+
+## Como rodar localmente
+
+- **Clonar o repositório**:
+
+```bash
+   git clone https://github.com/Psor1107/testhub.git
+   cd testhub
+```
+
+- **Compilar com o maven**:
+
+```bash
+    ./mvnw clean install
+```
+
+- **Abrir e rodar o tomcat**
+- **Banco de dados:**
+
+  - Baixar e extrair o Apache Derby
+  - Conectar-se ao banco de dados, criar testhub
+
+  ```bash
+      java -jar derbyrun.jar ij
+      connect 'jdbc:derby:testhub;create=true';
+  ```
+
+  - Executar o script de criação do banco de dados
+
+  ```bash
+    ij> run 'path-usuario\testhub\esquema.sql';
+  ```
+
+- **Deploy no tomcat utilizando o Maven Plugin**
+
+```bash
+    ./mvnw tomcat7:deploy
+```
+
+- **Acessar o sistema:**
+  http://localhost:8080/testhub/
 
 ## Current State
 
 We are currently focused on implementing the core requirements. Below is a visual representation of the current progress:
 
 ![Current State Diagram](https://www.plantuml.com/plantuml/dpng/fPB1QkCm48RlVWgTT_5XhoQ46CS1GxAxR19OUYbJUKYdM58hZQ0qpGFrEVfYbHNRjKieXPwY-Vy_CvyqNZW6orurYMp0ER5t7YmPSKo4-2cepiJQw4Cij56OYIrRwWHKG4slYAFNzE3n52s7-XQ6y2dfkkUr8YsEfwxSeMEqRTsFdJsdwJaraRfat-QlDNV8NuEiqKbB4inK1OR24aHzRIGqIs3SaS9eArGtrhXWaUDPHp9_lySMdGCJeIv11Dq2uu4W4-LmZXQZkZSRqfxRzgJv4qZ7mDu5AVwUPmxqbIP9b-2ZkoBrmHhWHqJVU41y31TfZ9j6GyoDjuxQgmb-d5Zyg_Bbdt0eDzVb_xBO5tbRhQhV-Rgw2bRxr_EdagRpOTkPEA15BGFtZwGNGs2oZKn8e_drHOLCLEo5I82NdjisOptanc-J2S_Kq1E8NoEOIK123Q5k6orGrrurRm00 "Current State")
+
+## Principais Funcionalidades
+
+- **Gerenciamento de Estratégias de Teste:**
+  - Cadastro de sessões de teste (requer login de testador)
+- **Gerenciamento de Sessões de Teste Exploratório:**
+  - Cadastro de sessões vinculadas a projetos, testadores (usuário logado), estratégias, com tempo definido e descrição
+  - Controle do ciclo de vida da sessão: Criado -> Em Execução (com registro de bugs)
+- O sistema deve ser internacionalizado em pelo menos dois idiomas: português e inglês.
 
 ---
 
