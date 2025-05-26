@@ -90,7 +90,7 @@
         <a href="/testhub/app/listar"><button class="button"><fmt:message key="projetos"/></button></a>
         <button class="button"><fmt:message key="sessões"/></button>
         <button class="button"><fmt:message key="estrategias"/></button>
-        <button class="button">Login</button>
+        <a href="/testhub//auth/login.jsp"><button class="button">Login</button></a>
     </div>
     <a href="mural.jsp?lingua=en" class="lang-button"><fmt:message key="ingles"/></a>
     <a href="mural.jsp?lingua=pt" class="lang-button"><fmt:message key="portugues"/></a>
