@@ -18,11 +18,22 @@ public class Projeto {
     private List<SessaoTeste> sessoesTeste;
 
     // Construtores
-    public Projeto() {
+    public Projeto(Long id) {
+        this.id = id;
     }
 
-    public Projeto(Long id, String nome, String descricao, LocalDateTime dataCriacao, LocalDateTime dataFim, List<Usuario> membros) {
+    public Projeto(Long id, String nome, String descricao, LocalDateTime dataCriacao, LocalDateTime dataFim,
+            List<Usuario> membros) {
         this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.dataCriacao = dataCriacao;
+        this.dataFim = dataFim;
+        this.membros = membros;
+    }
+
+    public Projeto(String nome, String descricao, LocalDateTime dataCriacao, LocalDateTime dataFim,
+            List<Usuario> membros) {
         this.nome = nome;
         this.descricao = descricao;
         this.dataCriacao = dataCriacao;
@@ -78,15 +89,19 @@ public class Projeto {
     public void setMembros(List<Usuario> membros) {
         this.membros = membros;
     }
+
     public Admin getAdmin() {
         return admin;
     }
+
     public void setAdmin(Admin admin) {
         this.admin = admin;
     }
+
     public List<SessaoTeste> getSessoesTeste() {
         return sessoesTeste;
     }
+
     public void setSessoesTeste(List<SessaoTeste> sessoesTeste) {
         this.sessoesTeste = sessoesTeste;
     }
