@@ -1,14 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:set var="idiomaSolicitado" value="${param.lingua}" />
-<c:if test="${not empty idiomaSolicitado}">
-    <fmt:setLocale value="${idiomaSolicitado}" />
-    <c:set var="userLocaleInSession" value="${idiomaSolicitado}" scope="session" />
-</c:if>
-<c:if test="${empty idiomaSolicitado and not empty sessionScope['javax.servlet.jsp.jstl.fmt.locale.session']}">
-    <fmt:setLocale value="${sessionScope['javax.servlet.jsp.jstl.fmt.locale.session']}" />
-</c:if>
+<%@ include file="idioma.jspf" %>
 
 <%@ page import="java.util.List" %>
 <%@ page import="br.ufscar.dc.dsw.model.Projeto" %>

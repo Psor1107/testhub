@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="idioma.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>

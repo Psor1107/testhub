@@ -21,16 +21,16 @@ public class SessaoTeste {
     private Long idProjeto;
 
     // quem executa a sessao de teste
-    private Tester tester;
-    private Long idTester;
+    private List<Tester> testers;
+    private List<Long> idTesters;
 
     // construtores
     public SessaoTeste() {
     }
 
-    public SessaoTeste(Long idProjeto, Long idTester, Long idEstrategia, int tempoMinutos, String descricao) {
+    public SessaoTeste(Long idProjeto, List<Long> idTesters, Long idEstrategia, int tempoMinutos, String descricao) {
         this.idProjeto = idProjeto;
-        this.idTester = idTester;
+        this.idTesters = idTesters;
         this.idEstrategia = idEstrategia;
         this.tempoMinutos = tempoMinutos;
         this.descricao = descricao;
@@ -50,20 +50,20 @@ public class SessaoTeste {
         this.id = id;
     }
 
-    public Tester getTester() {
-        return tester;
+    public List<Tester> getTesters() {
+        return testers;
     }
 
-    public void setTester(Tester tester) {
-        this.tester = tester;
+    public void setTesters(List<Tester> testers) {
+        this.testers = testers;
     }
 
-    public Long getIdTester() {
-        return idTester;
+    public List<Long> getIdTester() {
+        return idTesters;
     }
 
-    public void setIdTester(Long idTester) {
-        this.idTester = idTester;
+    public void setIdTester(List<Long> idTesters) {
+        this.idTesters = idTesters;
     }
 
     public Estrategia getEstrategia() {

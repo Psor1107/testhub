@@ -18,6 +18,9 @@ public class Projeto {
     private List<SessaoTeste> sessoesTeste;
 
     // Construtores
+    public Projeto() {
+    }
+
     public Projeto(Long id) {
         this.id = id;
     }
